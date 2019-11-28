@@ -179,6 +179,14 @@ CREATE TABLE Kunde (
         FOREIGN KEY (Adresse) REFERENCES Adresse(AdressID)
 );
 
+-- DDL statement to create view "MidAgeKunden" containing all customers between the ages of 30 to 40
+CREATE VIEW MidAgeKunden(UserID, Name, Vorname, Email, Geburtsdatum, TelefonNr, Adresse, IBAN, Lebensalter) AS
+    (SELECT K.*, Floor((Months_Between(Current_Date, K.Geburtsdatum)/12))
+    FROM Kunde K
+    WHERE FLOOR((MONTHS_BETWEEN(Current_Date, Geburtsdatum) / 12)) BETWEEN 30 AND 40
+    )
+;
+
 -- DDL statement to create table "Bild"
 CREATE TABLE Bild (
     BildID NUMERIC
@@ -226,6 +234,51 @@ CREATE TABLE Belegung (
         CHECK (Startdatum < Enddatum)
 );
 
+-- DDL statement to create view "Buchung" representing a specialization of "Belegung"
+-- containing all booked flats
+CREATE VIEW Buchung (BuchungsNr, Belegungsdatum, UserID, Ferienwohnung, Startdatum, Enddatum) AS
+    (SELECT B.BuchungsNr, B.Belegungsdatum, B.UserID, B.Ferienwohnung, B.Startdatum, B.Enddatum
+    FROM Belegung B
+    WHERE B.Status = 'gebucht'
+    )
+;
+
+-- DDL statement to create view "Reservierung" representing a specialization of "Belegung"
+-- containing all reserved flats
+CREATE VIEW Reservierung (BuchungsNr, Belegungsdatum, UserID, Ferienwohnung, Startdatum, Enddatum) AS
+    (SELECT B.BuchungsNr, B.Belegungsdatum, B.UserID, B.Ferienwohnung, B.Startdatum, B.Enddatum
+    FROM Belegung B
+    WHERE B.Status = 'reserviert'
+    )
+;
+
+-- DDL statement to create view "UebersichtKunden" containing all relevant customer information
+CREATE VIEW UebersichtKunden (
+    UserID, Name, Vorname, Email, Geburtsdatum, TelefonNr,
+    Strasse, Hausnummer, PLZ, Ort, Land,
+    IBAN, BIC, BLZ, KontoNr,
+    Status, Startdatum, Enddatum, Belegungsdatum,
+    Ferienwohnung, Beschreibung) AS
+    (
+    SELECT K.UserID, K.Name, K.Vorname, K.Email, K.Geburtsdatum, K.TelefonNr,
+           A.Strasse, A.HausNr, A.PLZ, O.Name, L.Name,
+           BV.*,
+           BE.Status, BE.Startdatum, BE.Enddatum, BE.Belegungsdatum,
+           F.WohnungsID, F.Beschreibung
+    FROM Kunde K FULL OUTER JOIN Belegung BE
+        ON K.UserID = BE.UserID
+        FULL OUTER JOIN Ferienwohnung F
+         ON BE.Ferienwohnung = F.WohnungsID,
+        Adresse A, Ort O, Land L, Bankverbindung BV
+    WHERE (
+        K.Adresse = A.AdressID AND
+        A.Ort = O.Name AND
+        O.Land = L.ISO AND
+        K.IBAN = BV.IBAN
+        )
+    )
+;
+
 -- DDL statement to create table "fliegen"
 CREATE TABLE fliegen (
     startet CHAR(3),
@@ -257,3 +310,22 @@ CREATE TABLE Rechnung (
     CONSTRAINT FK_Rechnung_Belegung
         FOREIGN KEY (BuchungsNr) REFERENCES Belegung(BuchungsNr)
 );
+
+-- DDL statement to create view "Zahlungsstatus" containing all relevant information regarding booked flats
+-- and whether they're already paid for
+CREATE VIEW Zahlungsstatus(
+    Ferienwohnung, Beschreibung,
+    UserID, Name, Vorname,
+    RechnungsNr, Rechnungsdatum, Betrag, Status, Zahlungsdatum) AS
+    (SELECT
+        F.WohnungsID, F.Beschreibung,
+        K.UserID, K.Name, K.Vorname,
+        R.RechnungsNr, R.Rechnungsdatum, R.Betrag, NVL2(R.Zahlungseingang,'bezahlt','offen') AS Status, R.Zahlungseingang
+    FROM Ferienwohnung F, Kunde K, Rechnung R, Belegung B
+    WHERE (
+        F.WohnungsID = B.Ferienwohnung AND
+        K.UserID = B.UserID AND
+        B.Status = 'gebucht' AND
+        B.BuchungsNr = R.BuchungsNr)
+    )
+;
