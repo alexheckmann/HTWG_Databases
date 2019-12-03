@@ -265,9 +265,9 @@ CREATE VIEW UebersichtKunden (
            BV.*,
            BE.Status, BE.Startdatum, BE.Enddatum, BE.Belegungsdatum,
            F.WohnungsID, F.Beschreibung
-    FROM Kunde K FULL OUTER JOIN Belegung BE
+    FROM Kunde K LEFT OUTER JOIN Belegung BE
         ON K.UserID = BE.UserID
-        FULL OUTER JOIN Ferienwohnung F
+        LEFT OUTER JOIN Ferienwohnung F
          ON BE.Ferienwohnung = F.WohnungsID,
         Adresse A, Ort O, Land L, Bankverbindung BV
     WHERE (
