@@ -16,6 +16,14 @@ ALTER TABLE Ort DISABLE CONSTRAINT FK_Ort_Flughafen;
 
 -- DML statements to remove data from tables
 
+DROP TRIGGER BuchungLoeschen;
+
+DROP TABLE stornierteBuchungen;
+
+DROP FUNCTION preis;
+
+DROP SEQUENCE Stornierungsnummer;
+
 DELETE FROM Rechnung;
 
 DELETE FROM fliegen;
