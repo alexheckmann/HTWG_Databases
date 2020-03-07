@@ -13,6 +13,14 @@ ALTER SESSION SET recyclebin = OFF;
 
 -- DDL statements to drop tables from DBS21
 
+DROP TRIGGER BuchungLoeschen;
+
+DROP TABLE stornierteBuchungen;
+
+DROP FUNCTION preis;
+
+DROP SEQUENCE Stornierungsnummer;
+
 DROP TABLE Rechnung;
 
 DROP TABLE fliegen;
