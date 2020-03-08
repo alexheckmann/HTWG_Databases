@@ -27,7 +27,8 @@ CREATE TABLE Zusatzausstattung (
 -- DDL statement to create table "Land"
 CREATE TABLE Land (
     ISO VARCHAR2(4) 
-        CONSTRAINT PK_Land PRIMARY KEY,
+        CONSTRAINT PK_Land
+        PRIMARY KEY,
     Name VARCHAR2(64) NOT NULL
         CONSTRAINT AK_Land
         UNIQUE 
@@ -36,7 +37,8 @@ CREATE TABLE Land (
 -- DDL statement to create table "Bankverbindung"
 CREATE TABLE Bankverbindung (
     IBAN VARCHAR2(34) 
-        CONSTRAINT PK_Bankverbindung PRIMARY KEY,
+        CONSTRAINT PK_Bankverbindung
+        PRIMARY KEY,
     BIC CHAR(11) NOT NULL,
     BLZ NUMERIC NOT NULL,
     KontoNr NUMERIC NOT NULL,
@@ -49,7 +51,8 @@ CREATE TABLE Bankverbindung (
 -- DDL statement to create table "Fluggesellschaft"
 CREATE TABLE Fluggesellschaft (
     GesellschaftsID NUMERIC
-        CONSTRAINT PK_FLugesellschaft PRIMARY KEY,
+        CONSTRAINT PK_FLugesellschaft
+        PRIMARY KEY,
     Name VARCHAR2(256) NOT NULL
         CONSTRAINT AK_Fluggesellschaft
         UNIQUE,
@@ -66,24 +69,26 @@ CREATE TABLE Ort (
     Land VARCHAR2(4) NOT NULL,
         CONSTRAINT FK_Ort_Land
         FOREIGN KEY (Land) REFERENCES Land(ISO),
-    Flughafen CHAR(3)
+    Flughafen CHAR(3) NOT NULL
 );
 
 -- DDL statement to create table "istEntfernt"
 CREATE TABLE istEntfernt (
-    von VARCHAR(256),
-    nach VARCHAR(256),
+    von VARCHAR2(256),
+    nach VARCHAR2(256),
     Entfernung NUMERIC NOT NULL
         CONSTRAINT RANGE_Entfernung
-        CHECK (Entfernung >= 0),
+        CHECK (Entfernung > 0),
     CONSTRAINT PK_istEntfernt
         PRIMARY KEY (von, nach),
     CONSTRAINT RANGE_Orte
         CHECK (von <> nach),
     CONSTRAINT FK_istEntfernt_Ort1
-        FOREIGN KEY (von) REFERENCES Ort(Name),
+        FOREIGN KEY (von) REFERENCES Ort(Name)
+        ON DELETE CASCADE,
     CONSTRAINT FK_istEntfernt_Ort2
         FOREIGN KEY (nach) REFERENCES Ort(Name)
+        ON DELETE CASCADE
 );
 
 -- DDL statement to create table "Adresse"
@@ -92,7 +97,7 @@ CREATE TABLE Adresse (
         CONSTRAINT PK_Adresse
         PRIMARY KEY,
     Strasse VARCHAR2(256) NOT NULL,
-    HausNr VARCHAR2(8),
+    HausNr VARCHAR2(8) NOT NULL,
     PLZ VARCHAR2(8) NOT NULL,
     Ort VARCHAR2(256) NOT NULL,
     CONSTRAINT FK_Adresse_Ort
@@ -115,7 +120,10 @@ CREATE TABLE Flughafen (
 );
 
 -- DDL statement to add constraint containing foreign key reference to table "Ort"
-ALTER TABLE Ort ADD CONSTRAINT FK_Ort_Flughafen FOREIGN KEY (Flughafen) REFERENCES Flughafen(Flughafenkuerzel);
+ALTER TABLE Ort
+    ADD CONSTRAINT FK_Ort_Flughafen
+    FOREIGN KEY (Flughafen) REFERENCES Flughafen(Flughafenkuerzel)
+    DEFERRABLE INITIALLY DEFERRED;
 
 -- DDL statement to create table "Touristenattraktion"
 CREATE TABLE Touristenattraktion (
@@ -153,7 +161,16 @@ CREATE TABLE Ferienwohnung (
         UNIQUE,
     CONSTRAINT FK_Ferienwohnung_Adresse
         FOREIGN KEY (Adresse) REFERENCES Adresse(AdressID)
+        DEFERRABLE INITIALLY DEFERRED
 );
+
+-- DDL statement to create view "Familienwohnung" containing flats bigger than 100m²
+CREATE VIEW Familienwohnungen(WOHNUNGSID, BESCHREIBUNG, ZIMMERZAHL, GROESSE, PREIS, ADRESSE) AS
+    (SELECT F.*
+    FROM Ferienwohnung F
+    WHERE Groesse > 100)
+    WITH CHECK OPTION
+;
 
 -- DDL statement to create table "Kunde"
 CREATE TABLE Kunde (
@@ -170,7 +187,7 @@ CREATE TABLE Kunde (
     Adresse NUMERIC NOT NULL
         CONSTRAINT AK2_Kunde
         UNIQUE,
-    IBAN VARCHAR(34) NOT NULL
+    IBAN VARCHAR2(34) NOT NULL
         CONSTRAINT AK3_Kunde
         UNIQUE,
     CONSTRAINT FK_Kunde_Bankverbindung
@@ -181,7 +198,7 @@ CREATE TABLE Kunde (
 
 -- DDL statement to create view "MidAgeKunden" containing all customers between the ages of 30 to 40
 CREATE VIEW MidAgeKunden(UserID, Name, Vorname, Email, Geburtsdatum, TelefonNr, Adresse, IBAN, Lebensalter) AS
-    (SELECT K.*, Floor((Months_Between(Current_Date, K.Geburtsdatum)/12))
+    (SELECT K.*, FLOOR((Months_Between(Current_Date, K.Geburtsdatum)/12))
     FROM Kunde K
     WHERE FLOOR((MONTHS_BETWEEN(Current_Date, Geburtsdatum) / 12)) BETWEEN 30 AND 40
     )
@@ -193,12 +210,13 @@ CREATE TABLE Bild (
         CONSTRAINT PK_Bild
         PRIMARY KEY,
     Beschreibung VARCHAR2(256) NOT NULL,
-    Dateipfad VARCHAR(256) NOT NULL
+    Dateipfad VARCHAR2(256) NOT NULL
         CONSTRAINT AK1_Bild
         UNIQUE,
     Ferienwohnung NUMERIC NOT NULL,
     CONSTRAINT FK_Bild_Ferienwohnung
         FOREIGN KEY (Ferienwohnung) REFERENCES Ferienwohnung(WohnungsID)
+        ON DELETE CASCADE
 );
 
 -- DDL statement to create table "istAusgestattet"
@@ -208,7 +226,8 @@ CREATE TABLE istAusgestattet (
     CONSTRAINT PK_istAusgestattet
        PRIMARY KEY (WohnungsID, AusstattungsID),
     CONSTRAINT FK_iA_Ferienwohnung
-        FOREIGN KEY (WohnungsID) REFERENCES Ferienwohnung(WohnungsID),
+        FOREIGN KEY (WohnungsID) REFERENCES Ferienwohnung(WohnungsID)
+        ON DELETE CASCADE,
     CONSTRAINT FK_iA_Zusatzausstattung
         FOREIGN KEY (AusstattungsID) REFERENCES Zusatzausstattung(AusstattungsID)
 );
@@ -227,9 +246,11 @@ CREATE TABLE Belegung (
     Startdatum DATE NOT NULL,
     Enddatum DATE NOT NULL,
     CONSTRAINT FK_Belegung_Kunde
-        FOREIGN KEY (UserID) REFERENCES Kunde(UserID),
+        FOREIGN KEY (UserID) REFERENCES Kunde(UserID)
+        ON DELETE SET NULL,
     CONSTRAINT FK_Belegung_Ferienwohnung
-        FOREIGN KEY (Ferienwohnung) REFERENCES Ferienwohnung(WohnungsID),
+        FOREIGN KEY (Ferienwohnung) REFERENCES Ferienwohnung(WohnungsID)
+        ON DELETE SET NULL,
     CONSTRAINT RANGE_Datum
         CHECK (Startdatum < Enddatum)
 );
@@ -287,11 +308,14 @@ CREATE TABLE fliegen (
     CONSTRAINT PK_fliegen
         PRIMARY KEY (startet, landet, GesellschaftsID),
     CONSTRAINT FK_fliegen_Flughafen1
-        FOREIGN KEY (startet) REFERENCES Flughafen(Flughafenkuerzel),
+        FOREIGN KEY (startet) REFERENCES Flughafen(Flughafenkuerzel)
+        ON DELETE CASCADE,
     CONSTRAINT FK_fliegen_Flughafen2
-        FOREIGN KEY (landet) REFERENCES Flughafen(Flughafenkuerzel),
+        FOREIGN KEY (landet) REFERENCES Flughafen(Flughafenkuerzel)
+        ON DELETE CASCADE,
     CONSTRAINT FK_fliegen_Fluggesellschaft
         FOREIGN KEY (GesellschaftsID) REFERENCES Fluggesellschaft(GesellschaftsID)
+        ON DELETE CASCADE
 );
 
 -- DDL statement to create table "Rechnung"
@@ -321,11 +345,97 @@ CREATE VIEW Zahlungsstatus(
         F.WohnungsID, F.Beschreibung,
         K.UserID, K.Name, K.Vorname,
         R.RechnungsNr, R.Rechnungsdatum, R.Betrag, NVL2(R.Zahlungseingang,'bezahlt','offen') AS Status, R.Zahlungseingang
-    FROM Ferienwohnung F, Kunde K, Rechnung R, Belegung B
+    FROM Ferienwohnung F, Kunde K,
+         Belegung B LEFT OUTER JOIN Rechnung R ON B.BuchungsNr = R.BuchungsNr
     WHERE (
         F.WohnungsID = B.Ferienwohnung AND
         K.UserID = B.UserID AND
-        B.Status = 'gebucht' AND
-        B.BuchungsNr = R.BuchungsNr)
+        B.Status = 'gebucht')
     )
 ;
+
+--Trigger
+
+CREATE SEQUENCE StornierungsNummer
+START WITH 1
+INCREMENT BY 1;
+
+
+CREATE OR REPLACE FUNCTION preis (Tage integer, Ferienwohnungsnummer integer) RETURN DECIMAL AS 
+TagesPreis decimal(5,2);
+	BEGIN
+		SELECT f.Preis INTO TagesPreis 
+		FROM FERIENWOHNUNG f 
+		WHERE f.Wohnungsid = Ferienwohnungsnummer;
+		RETURN(TagesPreis*Tage);
+END;
+/
+
+CREATE TABLE  stornierteBuchungen(
+    StornierungsNr NUMERIC PRIMARY KEY,
+    StornierungsDatum DATE NOT NULL,
+    BuchungsNr NUMERIC NOT NULL,
+    Buchungsdatum DATE NOT NULL,
+    Zeitraum NUMERIC NOT NULL,
+    Buchungswert DECIMAL NOT NULL,
+    Status VARCHAR2(10) NOT NULL
+        CONSTRAINT checkStatus
+        CHECK (Status IN ('bezahlt','offen')),
+    KundenNr NUMERIC NOT NULL,
+    KundenName VARCHAR2(20) NOT NULL,
+    WohnungsNr NUMERIC NOT NULL,
+    Beschreibung VARCHAR2(200) NOT NULL);
+
+
+
+CREATE OR REPLACE TRIGGER BuchungLoeschen
+BEFORE DELETE ON Belegung
+FOR EACH ROW
+WHEN (old.Status ='gebucht')
+DECLARE
+        Status VARCHAR2(20);
+        RechnungZurBuchung NUMERIC;
+BEGIN   
+        SELECT COUNT(*) into RechnungZurBuchung
+        FROM    Rechnung 
+        WHERE   BuchungsNr = :old.BuchungsNr;
+    IF    
+      RechnungZurBuchung = 1
+    THEN
+        SELECT  (NVL2(R.Zahlungseingang,'bezahlt','offen')) INTO Status
+        FROM    Rechnung 
+        WHERE   BuchungsNr = :old.BuchungsNr;
+    ELSE
+        Status := 'offen';
+    END IF;
+        
+          
+    INSERT INTO stornierteBuchungen(
+                StornierungsNr,
+                StornierungsDatum,
+                BuchungsNr,
+                Buchungsdatum,
+                Zeitraum,
+                Buchungswert,
+                Status,
+                KundenNr,
+                KundenName,
+                WohnungsNr,
+                Beschreibung)
+                    VALUES(
+                    StornierungsNummer.NEXTVAL,
+                    CURRENT_DATE,
+                    :old.Buchungsnr,
+                    :old.Belegungsdatum,
+                    (:old.Enddatum) - (:old.Startdatum),
+                    preis(((:old.Enddatum)-(:old.Startdatum)),:old.Ferienwohnung),
+                    Status,
+                    :old.UserID,
+                    (SELECT k.Name FROM Kunde k WHERE k.UserID= :old.UserID),
+                    :old.Ferienwohnung,
+                    (SELECT f.Beschreibung FROM Ferienwohnung f WHERE f.WohnungsID = :old.Ferienwohnung));
+                
+                DELETE FROM Rechnung 
+                WHERE BuchungsNr = :old.Buchungsnr;
+        END;
+/
