@@ -1,7 +1,9 @@
 # Oracle-SQL
-Datenbank-Entwürfe aus Aufgabenstellungen der Lehrveranstaltung "Datenbank- &amp; Informationssysteme I" &amp; "Datenbank- &amp; Informationssysteme II"
 
-Eine Agentur, die Ferienwohnungen vermittelt, möchte das Angebot von Wohnungen im Internet zugänglich 
+Das Repository enthält den konzeptuellen und logischen Entwurf sowie die Implementierung eines relationalen Datenbanksystems, basierend auf *Oracle 12c*. Zudem enthält es den Entwurf und die Implementierung eines Data Warehouse mit Star Schema zur Verwendung als OLAP-System.
+
+Die Datenbank basiert auf folgender Aufgabenstellung:
+_Eine Agentur, die Ferienwohnungen vermittelt, möchte das Angebot von Wohnungen im Internet zugänglich 
 machen und Buchungen durch Interessenten online ermöglichen. Erforderlich hierzu ist eine Datenbank, in 
 welcher die notwendigen Daten abgelegt und verwaltet werden können. 
 Basis für den Datenbank-Entwurf ist folgendes Ergebnis der Anforderungsanalyse: 
@@ -48,4 +50,4 @@ wohnung von einem Flughafen aus erreichen kann:
 dient werden, d.h. mit welchen Fluggesellschaften man von einem bestimmten (Start-)Flughafen einen 
 anderen (Ziel-)Flughafen erreichen kann. 
 - Weiterhin soll ermittelt werden können, welche der Fluggesellschaften die beste Servicequalität bietet. 
-Hierzu soll für jede Fluggesellschaft eine numerische Servicequalitätskennzahl (1-10) gespeichert werden.
+Hierzu soll für jede Fluggesellschaft eine numerische Servicequalitätskennzahl (1-10) gespeichert werden._
