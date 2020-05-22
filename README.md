@@ -1,6 +1,6 @@
 # Oracle-SQL
 
-Das Repository enthält den konzeptuellen und logischen Entwurf sowie die Implementierung einer relationalen Datenbank, basierend auf *Oracle 12c*. Zudem enthält es den Entwurf und die Implementierung eines Data Warehouse mit Star Schema zur Verwendung als OLAP-System.
+Das Repository enthält den konzeptuellen und logischen Entwurf sowie die Implementierung einer relationalen OLTP-Datenbank, basierend auf *Oracle 12c*. Zudem enthält es den Entwurf und die Implementierung eines Data Warehouse mit Star Schema zur Verwendung als OLAP-System.
 
 Die Datenbank basiert auf folgender Aufgabenstellung:
 Eine Agentur, die Ferienwohnungen vermittelt, möchte das Angebot von Wohnungen im Internet zugänglich 
