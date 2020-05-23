@@ -5,7 +5,8 @@ The underlying database management system is using <i>Oracle 12c</i>. Additional
 
 The OLTP database is used for a fictional holiday home agency resembling AirBnB, containing data about users, 
 holiday homes, business aspects, but also information about the next airport of both the user's location and the 
-holiday home's location, flights and tourist attractions. Data integrity is ensured by multiple mechanismns, 
+holiday home's location, flights and tourist attractions. <br>
+Data integrity is ensured by multiple mechanismns, 
 static integrity constraints are given by referential integrity and other check constraints, dynamic integrity constraints are given as triggers, 
 so no significant data (i.e. bookings) can be deleted; if one executes statements trying to delete booking records, 
 the trigger moves the affected data to an archive instead. <br><br>
