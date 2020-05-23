@@ -7,9 +7,13 @@ The OLTP database is used for a fictional holiday home agency resembling AirBnB,
 holiday homes, business aspects, but also information about the next airport of both the user's location and the 
 holiday home's location, flights and tourist attractions. <br>
 Data integrity is ensured by multiple mechanismns, 
-static integrity constraints are given by referential integrity and other check constraints, dynamic integrity constraints are given as triggers, 
+static integrity constraints are given by referential integrity and other check constraints, dynamic integrity 
+constraints are given as triggers, 
 so no significant data (i.e. bookings) can be deleted; if one executes statements trying to delete booking records, 
 the trigger moves the affected data to an archive instead. <br><br>
 
-The OLAP database is based on a star schema. After the ETL process, anonymized data regarding users, holiday homes, and the periods of time in which people booked a holiday home may be statistically analyzed, e.g. mean age of users or the most booked country. <br><br>
-This repository also contains a simple example program written in Java using JDBC. It allows an authorized user to create new users, search a user by name, or book or delete a holiday home.
+The OLAP database is based on a star schema. After the ETL process, anonymized data regarding users, holiday homes, 
+and the periods of time in which people booked a holiday home may be statistically analyzed, e.g. mean age of users or 
+the most booked country. <br><br>
+This repository also contains a simple example program written in Java using JDBC. It allows an authorized user to 
+create new users, search a user by name, or book or delete a holiday home.
