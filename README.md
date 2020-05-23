@@ -11,5 +11,5 @@ static integrity constraints are given by referential integrity and other check 
 so no significant data (i.e. bookings) can be deleted; if one executes statements trying to delete booking records, 
 the trigger moves the affected data to an archive instead. <br><br>
 
-The OLAP database is based on a star schema. After the ETL process, data regarding users, holiday homes, and the periods of time in which people booked a holiday home may be analyzed. <br><br>
+The OLAP database is based on a star schema. After the ETL process, anonymized data regarding users, holiday homes, and the periods of time in which people booked a holiday home may be statistically analyzed. <br><br>
 This repository also contains a simple example program written in Java using JDBC. It allows an authorized user to create new users, search a user by name, or book or delete a holiday home.
