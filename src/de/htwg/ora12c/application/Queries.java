@@ -1,4 +1,4 @@
-package labor;
+package de.htwg.ora12c.application;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

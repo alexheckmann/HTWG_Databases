@@ -1,4 +1,4 @@
-package labor;
+package de.htwg.ora12c.application;
 
 import java.text.DateFormat;
 import java.text.ParseException;

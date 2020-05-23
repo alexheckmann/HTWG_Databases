@@ -1,10 +1,10 @@
-package labor;
+package de.htwg.ora12c.application;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-import static labor.Utils.decodeTransactionIsolationLevel;
+import static de.htwg.ora12c.application.Utils.decodeTransactionIsolationLevel;
 
 /**
  * @author Alexander Heckmann

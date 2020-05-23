@@ -1,4 +1,4 @@
-package labor;
+package de.htwg.ora12c.application;
 
 /**
  * @author Alexander Heckmann
