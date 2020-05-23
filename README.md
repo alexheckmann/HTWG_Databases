@@ -1,7 +1,7 @@
 <h1>Databases & Information Systems</h1>
 
 This repository contains the conceptual and logical design of a relational database as well as the implementation in SQL and PL/SQL. 
-The underlying database management system is using <i>Oracle 12c</i>. Additionally, it contains the implementation of a data warehouse following a star schema, used as an OLAP system.<br><br>
+The underlying database management system is using <i>Oracle 12c</i>. Additionally, it contains the implementation of a data warehouse with a star schema, used as an OLAP system.<br><br>
 
 The OLTP database is used for a fictional holiday home agency resembling AirBnB, containing data about users, 
 holiday homes, business aspects, but also information about the next airport of both the user's location and the 
