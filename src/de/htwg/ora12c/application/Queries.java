@@ -85,7 +85,7 @@ public class Queries {
     protected static int selectTable(Table table) throws SQLException {
 
 
-        String select = table.getQuery();
+        String select = table.getQUERY();
         Utils.printDebugInfo("SELECT statement: " + select);
 
         Statement statement = Program.connection.createStatement();

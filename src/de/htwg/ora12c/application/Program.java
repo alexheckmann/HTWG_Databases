@@ -17,7 +17,9 @@ public class Program {
     protected static boolean debugMode = false;
 
     protected static void connect() {
+
         try {
+
             OracleDriver oracleDriver = new OracleDriver();
             DriverManager.registerDriver(oracleDriver);
 
@@ -142,7 +144,8 @@ public class Program {
     /**
      * Searches the data base for a name or surname similar to a text snippet entered in the console.
      */
-    public static void searchCustomer() throws ParseException {
+    public static void searchCustomer() {
+
         System.out.println("Searching a customer...");
 
         String name = Utils.readString("Please enter a name: ");
@@ -230,19 +233,17 @@ public class Program {
 
                 while (!validDecision) {
                     switch (decision) {
-                        case 1:
+                        case 1 -> {
                             validDecision = true;
                             beginDate = Format.validate(Utils.readString("Please enter a correct begin date: "), Format.DATE);
                             validTimePeriod = Utils.checkPeriodValidity(beginDate, endDate);
-                            break;
-
-                        case 2:
+                        }
+                        case 2 -> {
                             validDecision = true;
                             endDate = Format.validate(Utils.readString("Please enter a correct end date: "), Format.DATE);
                             validTimePeriod = Utils.checkPeriodValidity(beginDate, endDate);
-                            break;
-                        default:
-                            System.out.println("Please enter a correct number. ");
+                        }
+                        default -> System.out.println("Please enter a correct number. ");
                     }
                 }
             }
@@ -265,8 +266,7 @@ public class Program {
                 while (!validDecision) {
 
                     switch (decision) {
-
-                        case 1:
+                        case 1 -> {
                             validDecision = true;
                             beginDate = Format.validate(Utils.readString("Please enter the date " +
                                     "the occupancy shall start at: "), Format.DATE);
@@ -274,18 +274,13 @@ public class Program {
                             endDate = Format.validate(Utils.readString("Please enter the date " +
                                     "the occupancy shall end at: "), Format.DATE);
                             Utils.printDebugInfo("End date of the occupancy: " + endDate);
-
                             available = Queries.checkFlatAvailability(flatID, beginDate, endDate);
-
-                            break;
-
-                        case 2:
-
+                        }
+                        case 2 -> {
                             System.out.println("Cancelling... ");
                             return;
-
-                        default:
-                            System.out.println("Not a valid option. ");
+                        }
+                        default -> System.out.println("Not a valid option. ");
                     }
                 }
             }
@@ -464,4 +459,5 @@ public class Program {
         }
 
     }
+
 }

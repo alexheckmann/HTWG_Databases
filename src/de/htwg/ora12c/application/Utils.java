@@ -17,25 +17,18 @@ import java.util.concurrent.TimeUnit;
 public class Utils {
 
     /*
-     * Decode SQL transaction isolation levels
+     * Decode SQL transaction isolation levels.
      */
     public static String decodeTransactionIsolationLevel(int transactionIsolationLevel) {
 
-        switch (transactionIsolationLevel) {
-
-            case Connection.TRANSACTION_NONE:
-                return "No transactions supported";
-            case Connection.TRANSACTION_READ_COMMITTED:
-                return "Read committed";
-            case Connection.TRANSACTION_READ_UNCOMMITTED:
-                return "Read uncommitted";
-            case Connection.TRANSACTION_REPEATABLE_READ:
-                return "Repeatable read";
-            case Connection.TRANSACTION_SERIALIZABLE:
-                return "Serializable";
-            default:
-                return "Unknown trasaction isolation level";
-        }
+        return switch (transactionIsolationLevel) {
+            case Connection.TRANSACTION_NONE -> "No transactions supported";
+            case Connection.TRANSACTION_READ_COMMITTED -> "Read committed";
+            case Connection.TRANSACTION_READ_UNCOMMITTED -> "Read uncommitted";
+            case Connection.TRANSACTION_REPEATABLE_READ -> "Repeatable read";
+            case Connection.TRANSACTION_SERIALIZABLE -> "Serializable";
+            default -> "Unknown transaction isolation level";
+        };
 
     }
 
@@ -176,6 +169,7 @@ public class Utils {
      * @param information debug information to print
      */
     public static void printDebugInfo(String information) {
+
         if (Program.debugMode) {
             System.out.println(">> DEBUG INFO: " + information);
         }
@@ -210,10 +204,12 @@ public class Utils {
      * @throws ParseException when an incorrect string is parsed to a date
      */
     protected static boolean checkPeriodValidity(String beginDate, String endDate) throws ParseException {
+
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date d1 = dateFormat.parse(beginDate);
         Date d2 = dateFormat.parse(endDate);
 
         return d1.before(d2);
     }
+
 }

@@ -25,14 +25,14 @@ public enum Table {
             "O.Land = L.ISO " +
             "ORDER BY F.WohnungsID");
 
-    private String query;
+    private final String QUERY;
 
-    Table(String query) {
-        this.query = query;
+    Table(String QUERY) {
+        this.QUERY = QUERY;
     }
 
-    public String getQuery() {
-        return query;
+    public String getQUERY() {
+        return QUERY;
     }
 
 }

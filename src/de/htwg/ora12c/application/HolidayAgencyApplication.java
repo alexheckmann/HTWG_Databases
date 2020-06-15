@@ -9,14 +9,14 @@ import static de.htwg.ora12c.application.Utils.decodeTransactionIsolationLevel;
 /**
  * @author Alexander Heckmann
  */
-public class Main {
+public class HolidayAgencyApplication {
 
     /**
      * Asks the user for the desired part of the program and reads in the decision as an integer number.
      */
     private static void printOptions() throws ParseException {
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
 
             System.out.println();
             System.out.println("1) Insert a customer");
@@ -37,10 +37,11 @@ public class Main {
             executeProgram(decision);
 
         }
+
     }
 
     /**
-     * Executes a part of the program specified by {@code decision}
+     * Executes a part of the program specified by {@code decision}.
      *
      * @param decision number indicating which part of the program you want to run
      */

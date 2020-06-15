@@ -18,15 +18,16 @@ public enum Format {
     /**
      * The pattern the enum type shall match.
      */
-    private String regEx;
+    private final String REGEX;
     /**
      * Name of what the enum type represents.
      */
-    private String name;
+    private final String NAME;
 
-    Format(String regEx, String name, int maxLength) {
-        this.regEx = regEx;
-        this.name = name;
+    Format(String REGEX, String NAME, int maxLength) {
+
+        this.REGEX = REGEX;
+        this.NAME = NAME;
         this.MAX_LENGTH = maxLength;
     }
 
@@ -46,7 +47,7 @@ public enum Format {
 
         while (text.length() == 0) {
 
-            text = Utils.readString("Please enter a correct " + format.getName() + ": ");
+            text = Utils.readString("Please enter a correct " + format.getNAME() + ": ");
 
         }
 
@@ -54,16 +55,16 @@ public enum Format {
 
             System.out.println();
             text = Utils.readString("Input is too long. " +
-                    "Please enter a shortened version of the " + format.getName() + ": ");
+                    "Please enter a shortened version of the " + format.getNAME() + ": ");
 
         }
 
 
         if (format.equals(Format.BIRTHDAY_DATE)) {
 
-            while (!text.matches(format.regEx)) {
+            while (!text.matches(format.REGEX)) {
 
-                text = Utils.readString("Please enter a correct " + format.getName() + ": ");
+                text = Utils.readString("Please enter a correct " + format.getNAME() + ": ");
 
             }
 
@@ -75,7 +76,7 @@ public enum Format {
             // ensure that the birthday is before the current date
             while (!(birthDayDate.before(currentDate))) {
 
-                text = Utils.readString("Please enter a correct " + format.getName() + ": ");
+                text = Utils.readString("Please enter a correct " + format.getNAME() + ": ");
                 birthDayDate = simpleDateFormat.parse(text);
 
             }
@@ -84,9 +85,9 @@ public enum Format {
 
         } else if (format.equals(Format.DATE)) {
 
-            while (!text.matches(format.regEx)) {
+            while (!text.matches(format.REGEX)) {
 
-                text = Utils.readString("Please enter a correct " + format.getName() + ": ");
+                text = Utils.readString("Please enter a correct " + format.getNAME() + ": ");
 
             }
 
@@ -96,11 +97,13 @@ public enum Format {
 
     }
 
-    public String getRegEx() {
-        return regEx;
+    public String getREGEX() {
+
+        return REGEX;
     }
 
-    public String getName() {
-        return name;
+    public String getNAME() {
+
+        return NAME;
     }
 }
