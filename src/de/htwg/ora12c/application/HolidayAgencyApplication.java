@@ -53,30 +53,24 @@ public class HolidayAgencyApplication {
 
 
             switch (decision) {
-
-                case 1:
+                case 1 -> {
                     validDecision = true;
                     Program.insertCustomer();
-                    break;
-
-                case 2:
+                }
+                case 2 -> {
                     validDecision = true;
                     Program.searchCustomer();
-                    break;
-
-                case 3:
+                }
+                case 3 -> {
                     validDecision = true;
                     Program.createOccupancy();
-                    break;
-
-                case 4:
+                }
+                case 4 -> {
                     validDecision = true;
                     Program.deleteOccupancy();
-                    break;
-
-                case 5:
+                }
+                case 5 -> {
                     System.out.println("Exiting...");
-
                     try {
 
                         if (Program.connection != null && !Program.connection.isClosed()) {
@@ -89,13 +83,10 @@ public class HolidayAgencyApplication {
                         System.exit(-1);
 
                     }
-
-
                     System.exit(0);
-
-                case 6:
+                }
+                case 6 -> {
                     validDecision = true;
-
                     if (!Program.debugMode) {
                         Program.debugMode = true;
 
@@ -106,12 +97,12 @@ public class HolidayAgencyApplication {
                         System.out.println("\n Debug mode disabled.");
 
                     }
-                    break;
-
-                default:
+                }
+                default -> {
                     decision = Utils.readInt("Not a valid option, please enter another decision: ");
                     Utils.printDebugInfo("decision is " + decision);
                     System.out.println();
+                }
             }
         }
     }
