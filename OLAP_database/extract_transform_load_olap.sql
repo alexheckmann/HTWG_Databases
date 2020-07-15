@@ -18,7 +18,7 @@ SELECT K.Userid,
 ;
 
 INSERT INTO Ferienwohnungen (Wohnungsid, Zimmerzahl, Groesse, Preis, Plz, Ort, Land)
-SELECT K.Userid,
+SELECT F.Wohnungsid,
        F.Zimmerzahl,
        F.Groesse,
        F.Preis,
