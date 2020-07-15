@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author Alexander Heckmann
+ * @author Tandem 21; Philip Schächinger, Alexander Aichholz, Alexander Heckmann
  */
 public enum Format {
 

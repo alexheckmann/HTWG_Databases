@@ -7,7 +7,7 @@ import java.text.ParseException;
 import static de.htwg.ora12c.application.Utils.decodeTransactionIsolationLevel;
 
 /**
- * @author Alexander Heckmann
+ * @author Tandem 21; Philip Schächinger, Alexander Aichholz, Alexander Heckmann
  */
 public class HolidayAgencyApplication {
 

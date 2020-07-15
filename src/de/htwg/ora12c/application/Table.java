@@ -1,7 +1,7 @@
 package de.htwg.ora12c.application;
 
 /**
- * @author Alexander Heckmann
+ * @author Tandem 21; Philip Schächinger, Alexander Aichholz, Alexander Heckmann
  */
 public enum Table {
 

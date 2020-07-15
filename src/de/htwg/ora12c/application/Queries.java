@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * @author Alexander Heckmann
+ * @author Tandem 21; Philip Schächinger, Alexander Aichholz, Alexander Heckmann
  */
 public class Queries {
 

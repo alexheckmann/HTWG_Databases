@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Alexander Heckmann
+ * @author Tandem 21; Philip Schächinger, Alexander Aichholz, Alexander Heckmann
  */
 public class Utils {
 
